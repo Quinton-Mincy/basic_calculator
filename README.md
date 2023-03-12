@@ -1,6 +1,6 @@
 # Basic Calculator
 
-![Screen Shot 2023-03-12 at 1 46 33 PM](https://user-images.githubusercontent.com/73136662/224562730-95758fe5-f341-4059-987a-e47af1bb698f.png)
+<img width="618" alt="Screen Shot 2023-03-12 at 7 11 15 PM" src="https://user-images.githubusercontent.com/73136662/224579751-a75426f4-c855-404f-8ce4-c52051da9c2f.png">
 
 ## Overview
 

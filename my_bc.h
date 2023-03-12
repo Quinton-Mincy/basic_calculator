@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
-#include <errno.h>
 
 enum t_type{
     DIGIT,

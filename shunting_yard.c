@@ -125,7 +125,6 @@ int rev_pol(queue* postfix, bool* err){
             int operand2 = atoi(result->pop(&result));
             int operand1 = atoi(result->pop(&result));
             if(*curr_elem == '/' && operand2 == 0){
-                errno = 1;
                 *err = true;
                 return -1;
             }

@@ -21,6 +21,10 @@ int calculate(char *expression, bool *no_err){
 }
 
 void read_loop(){
+    printf("**********************************************************************\n\
+* Thanks for trying out my calculator!                               *\n*                                                                    *\n\
+* Currently supports: addition, subtraction, multiplication, division*\n\
+**********************************************************************\n\n");
     char *buffer = NULL;
     bool no_err = true;
     while((buffer = readline(0))!=NULL){
@@ -28,11 +32,13 @@ void read_loop(){
             free(buffer);
             return;
         }
-        int solution = calculate(buffer,&no_err);
-        if(no_err){
-            printf("%d\n",solution);
-        }else{
-            no_err = true;
+        else if(strlen(buffer)){
+            int solution = calculate(buffer,&no_err);
+            if(no_err){
+                printf("%d\n",solution);
+            }else{
+                no_err = true;
+            }
         }
         free(buffer);
     }

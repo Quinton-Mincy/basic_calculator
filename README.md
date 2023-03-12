@@ -135,9 +135,9 @@ My implementation of the shunting yard algorithm invloves 2 data abstract data s
     |   |                   |   |
     | + |                   |   |
     | * |                   |   |
-    | 3 |                   |   |
+    | 4 |                   |   |
     | 2 |                   |   |
-    | 4 |                   | - |
+    | 3 |                   | - |
    -------                 ------- 
     output queue            operator stack
 
@@ -147,9 +147,9 @@ My implementation of the shunting yard algorithm invloves 2 data abstract data s
     | 2 |                   |   |
     | + |                   |   |
     | * |                   |   |
-    | 3 |                   |   |
+    | 4 |                   |   |
     | 2 |                   |   |
-    | 4 |                   | - |
+    | 3 |                   | - |
    -------                 ------- 
     output queue            operator stack
 
@@ -159,11 +159,14 @@ My implementation of the shunting yard algorithm invloves 2 data abstract data s
     | 2 |                   |   |
     | + |                   |   |
     | * |                   |   |
-    | 3 |                   |   |
-    | 2 |                   |   |
     | 4 |                   |   |
+    | 2 |                   |   |
+    | 3 |                   |   |
    -------                 ------- 
     output queue            operator stack
+    
+                    postfix
+    3 + 2 * 4 - 2   =======>  3 2 4 * + 2 -
 
 ```
 

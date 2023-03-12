@@ -127,7 +127,6 @@ int rev_pol(queue* postfix, bool* err){
             if(*curr_elem == '/' && operand2 == 0){
                 errno = 1;
                 *err = true;
-                perror("divide by zero\n");
                 return -1;
             }
             int answer = send_eq(operand1, operand2,hash->hash[(int)*curr_elem].operation);

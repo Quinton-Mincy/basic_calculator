@@ -2,6 +2,7 @@
 
 int error_handle(char *err_msg){
     perror(err_msg);
+    errno = 1;
     return EXIT_FAILURE;
 }
 
@@ -17,6 +18,8 @@ char* lookahead(token* tokens, bool look_far){
     }
     return next_token;
 }
+
+
 
 bool is_valid(token_info* info){
     token* tokens = info->tokens;

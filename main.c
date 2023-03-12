@@ -1,12 +1,9 @@
 #include "my_bc.h"
+#include <readline/readline.h>
 
-int main(int ac, char* av[]){
-    if(ac != 2){
-        return -1;
-    }
+int calculate(char *expression){
     int ret;
-    char* express = av[1];
-    token_info* info = tokenizer(express);
+    token_info* info = tokenizer(expression);
     if(info == NULL){
         return error_handle("parse error");
     }
@@ -16,9 +13,27 @@ int main(int ac, char* av[]){
         if(err){//divide by zero error
             return error_handle("Runtime error: Divide by zero");
         }
-        printf("%d\n",ret);//evaluation successful
+        //evaluation successful
     }else{//expression not valid
         return error_handle("parse error");
     }
+    return ret;
+}
+
+void read_loop(){
+    char *buffer = NULL;
+    while((buffer = readline(0))!=NULL){
+        int solution = calculate(buffer);
+        if(errno != 1){
+            printf("%d\n",solution);
+        }else{
+            errno = 0;
+        }
+        free(buffer);
+    }
+}
+
+int main(){
+    read_loop();
     return EXIT_SUCCESS;
 }

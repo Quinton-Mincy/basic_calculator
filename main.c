@@ -1,33 +1,38 @@
 #include "my_bc.h"
 #include <readline/readline.h>
 
-int calculate(char *expression){
+int calculate(char *expression, bool *no_err){
     int ret;
     token_info* info = tokenizer(expression);
     if(info == NULL){
-        return error_handle("parse error");
+        return error_handle("parse error",no_err);
     }
     bool err = false;//will catch a divide by zero error in rev_pol
     if(is_valid(info)){//checks if mathematical expression is valid
         ret = rev_pol(shunting_yard(info),&err);
         if(err){//divide by zero error
-            return error_handle("Runtime error: Divide by zero");
+            return error_handle("Runtime error: Divide by zero",no_err);
         }
         //evaluation successful
     }else{//expression not valid
-        return error_handle("parse error");
+        return error_handle("parse error",no_err);
     }
     return ret;
 }
 
 void read_loop(){
     char *buffer = NULL;
+    bool no_err = true;
     while((buffer = readline(0))!=NULL){
-        int solution = calculate(buffer);
-        if(errno != 1){
+        if(strncmp(buffer,"quit",4)==0){
+            free(buffer);
+            return;
+        }
+        int solution = calculate(buffer,&no_err);
+        if(no_err){
             printf("%d\n",solution);
         }else{
-            errno = 0;
+            no_err = true;
         }
         free(buffer);
     }

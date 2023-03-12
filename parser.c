@@ -1,8 +1,8 @@
 #include "my_bc.h"
 
-int error_handle(char *err_msg){
+int error_handle(char *err_msg, bool *no_err){
     perror(err_msg);
-    errno = 1;
+    *no_err = false;
     return EXIT_FAILURE;
 }
 

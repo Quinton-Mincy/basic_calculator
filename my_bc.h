@@ -99,7 +99,7 @@ void lookahead_mod(token** tokens, bool look_far, char* val);
 token_info* tokenizer(char* expression);
 
 //parser.c
-int error_handle(char *err_msg);
+int error_handle(char *err_msg, bool *no_err);
 char* lookahead(token* tokens, bool look_far);
 bool is_valid(token_info* info);
 

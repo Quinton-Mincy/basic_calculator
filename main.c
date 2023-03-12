@@ -8,21 +8,17 @@ int main(int ac, char* av[]){
     char* express = av[1];
     token_info* info = tokenizer(express);
     if(info == NULL){
-        errno = 1;
-        perror("parse error");
-        return 1;
+        return error_handle("parse error");
     }
     bool err = false;//will catch a divide by zero error in rev_pol
     if(is_valid(info)){//checks if mathematical expression is valid
-        ret = rev_pol(shunt(info),&err);
+        ret = rev_pol(shunting_yard(info),&err);
         if(err){//divide by zero error
-            return 1;
+            return error_handle("Runtime error: Divide by zero");
         }
         printf("%d\n",ret);//evaluation successful
     }else{//expression not valid
-        errno = 1;
-        perror("parse error");
-        return 1;
+        return error_handle("parse error");
     }
     return EXIT_SUCCESS;
 }

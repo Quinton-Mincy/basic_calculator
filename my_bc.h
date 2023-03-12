@@ -70,6 +70,7 @@ typedef struct s_operation_hash{
     struct s_eq_tuples hash[127];
 }operation_hash;
 
+
 //stack.c
 bool full_stack(stack* op_stack);
 stack* init_stack(int size);
@@ -98,6 +99,7 @@ void lookahead_mod(token** tokens, bool look_far, char* val);
 token_info* tokenizer(char* expression);
 
 //parser.c
+int error_handle(char *err_msg);
 char* lookahead(token* tokens, bool look_far);
 bool is_valid(token_info* info);
 
@@ -110,7 +112,7 @@ char* reverse_string(char* str);
 char* itoa(int num);
 
 //shunt_yard.c
-queue* shunt(token_info* info);
+queue* shunting_yard(token_info* info);
 void swap_top(queue** output, stack** operators, char* token);
 void handle_paren(queue** output, stack** operators);
 int which_tup(char operator);

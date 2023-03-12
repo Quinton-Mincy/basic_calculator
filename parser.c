@@ -1,5 +1,10 @@
 #include "my_bc.h"
 
+int error_handle(char *err_msg){
+    perror(err_msg);
+    return EXIT_FAILURE;
+}
+
 char* lookahead(token* tokens, bool look_far){
     if(tokens->next->token == NULL){
         return NULL;
@@ -12,8 +17,6 @@ char* lookahead(token* tokens, bool look_far){
     }
     return next_token;
 }
-
-#include "my_bc.h"
 
 bool is_valid(token_info* info){
     token* tokens = info->tokens;

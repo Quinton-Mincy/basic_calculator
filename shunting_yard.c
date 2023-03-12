@@ -149,7 +149,7 @@ void r_paren_rules(stack** op_stack, queue** output, token** tokens, char* curr_
     handle_paren(output,op_stack);
 }
 
-queue* shunt(token_info* info){
+queue* shunting_yard(token_info* info){
     queue* output = init_queue(info->size);
     stack* op_stack = init_stack(info->size);
     token* tokens = info->tokens;

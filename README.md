@@ -19,8 +19,151 @@ Need assistance creating regular expressions? Call (123) 456-7890, or visit us a
 
 The regular expression for phone numbers would need recognize *(123)456-7890* as a phone number and disregard all of the other numbers in the sentence. Moreover, a well written regular expression should just as easily recognize *1234567890* or *123-456-7890* as the same phone number. So in this example, the regex would define a finite set of characters *(0,1,2,3,4,5,6,7,8,9,(,),-)*, and also have a set of rules like: a phone number is 7 numbers, may or may not have parenthesis, and may or may not have hyphens. Similarly, for determining if a mathematical expression in infix notation is valid, the set of characters would be the digits *0-9*, parenthesis, and the set of operators (*+*,*-*,*\**, etc.). A few rules that goven these tokens would be: there must be an equal number of opening and closing parenthesis, an operator cannot immediatley follow another operator (*4+/2*) unless the second operator is the minus (*-*) operator immediatly followed by a number (*5\*-2*). In this second rule, the expression *5\*-2* should be interpreted as "5 multiplied by negative 2" and considered valid, while *4+/2*, or "4 plus divided by 2" does not make sense. Furthermore, the regex for an expression in RPN would require a different set of rules. 
 
-If you want to see how I validated the users input, check the *is_valid* function in the *parser.c* folder. We will now move into shunting yard. 
+If you want to see how I validated the users input, check the *is_valid* function in the *parser.c* folder. Another thing to note is that our implementation creates a linked list of the tokens found on the expression in the order that that are presented (*2+3\*4* => *2-> + -> 3 -> \* -> 4*) and passed the list to the shunting yard algorith. This is important to do to eliminate non-essentail characters like spaces that are in the users input. We will now move into shunting yard. 
 
 ## The Shunting Yard Algorithm
 
-My implementation of the shunting yard algorithm invloves 2 data abstract data structures, a [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)) and a [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) (similar to, but not to be confused with the [stack memory construct](https://en.wikipedia.org/wiki/Stack-based_memory_allocation)). 
+My implementation of the shunting yard algorithm invloves 2 data abstract data structures, a [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)) and a [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) (similar to, but not to be confused with the [stack memory construct](https://en.wikipedia.org/wiki/Stack-based_memory_allocation)). The queue and stack are both implemented with arrays, but the way they function is precisely opposite. The queue operates in a FIFO (first-in-first-out) fashion, and the stack operates on a LIFO (last-in-first-out) basis. The stack has 2 main functions that act on it: *push* and *pop*. The push adds an element to the "top" of the array, and *pop* removes the element that is currently at the "top" of the stack. The two main operations for a queue are *enqueue* and *dequeue*. *Enqueue* adds an element to the "head" of an array, and *dequeue* removes the element as the "tail" of the queue. These will be calrified lter on. For now, you need to know that the queue will be the output of the shunting yard algorithm, to be used in calculating the result, and the stack is essential in the transformation from infix to postfix. As mentioned before, the shunting yard algorithm is passed a linked list of the tokens involved in the infix expression, and evaluates them one by one. Below is the outline of the algorithm, followed by an example.
+
+```
+    Initialize a queue and a stack: for the output and operators, respectively.
+    Iterating through the linked list:
+
+    Rule 1: If the current token is a number (operand), push it to the output queue.
+    
+    Rule 2: If the current token is an operator:
+
+            a. There is an operator on the top of the operator stack:
+
+                i. If the current operator has higher precedence (referring to the order of operations) than
+                   the operator at the top of the stack => push the current operator to the stack.
+
+                ii. The current operator has the same or lesser precedence as the operator at the top of the
+                    stack => pop, the operator at the top of the stack, enqueue it in the output queue, and
+                    return to (a.) if there remains operators on the stack, else, go to (b.). 
+        
+            b. Push the current operator to the operator stack.
+
+    Rule 3: If the current token is a left parenthesis, push it to the operator stack.
+
+    Rule 4: If the current token is a right parenthesis:
+
+            a. Pop operators from the operator stack and push them to the output queue until a left parenthesis is encountered.
+
+            b. Pop the left parenthesis from the operator stack (but don't push it to the output queue).
+
+    Rule 5: If there are no more tokens, pop remaining operators from the operator stack and push them to the output queue.
+
+
+    Example: 3 + 2 * 4 - 2
+
+    Rule 1:
+    
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    | 3 |                   |   |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 2.b:
+
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    | 3 |                   | + |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 1:
+
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    | 2 |                   |   |
+    | 3 |                   | + |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 2.a.i:
+                                    
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    | 2 |                   | * |
+    | 3 |                   | + |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 1:
+                                    
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    | 4 |                   |   |
+    | 2 |                   | * |
+    | 3 |                   | + |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 2.a.ii
+                                    -
+    |   |                   |   |
+    |   |                   |   |
+    |   |                   |   |
+    | * |                   |   |
+    | 4 |                   |   |
+    | 2 |                   |   |
+    | 3 |                   | + |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 2.a.ii
+                                    
+    |   |                   |   |
+    |   |                   |   |
+    | + |                   |   |
+    | * |                   |   |
+    | 3 |                   |   |
+    | 2 |                   |   |
+    | 4 |                   | - |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 1:
+
+    |   |                   |   |
+    | 2 |                   |   |
+    | + |                   |   |
+    | * |                   |   |
+    | 3 |                   |   |
+    | 2 |                   |   |
+    | 4 |                   | - |
+   -------                 ------- 
+    output queue            operator stack
+
+    Rule 5:
+
+    | - |                   |   |
+    | 2 |                   |   |
+    | + |                   |   |
+    | * |                   |   |
+    | 3 |                   |   |
+    | 2 |                   |   |
+    | 4 |                   |   |
+   -------                 ------- 
+    output queue            operator stack
+
+```
+

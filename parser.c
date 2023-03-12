@@ -13,15 +13,16 @@ char* lookahead(token* tokens, bool look_far){
     return next_token;
 }
 
-bool is_valid(token* tokens, token_info* info){
+#include "my_bc.h"
+
+bool is_valid(token_info* info){
+    token* tokens = info->tokens;
     int size = info->size;
     enum t_type last_token = -1;
     bool result = true;
     stack* paren_stack = init_stack(size);
-    // cmd commands[] = {&is_digit,&includes};
     while(tokens!=NULL && result){
         char* curr_token = tokens->token;
-        // printf("%s\n",curr_token);
         if(curr_token == NULL){
             break;
         }

@@ -69,3 +69,33 @@ void print_ll(token* tokens){
     }
     printf("\n");
 }
+
+token_info* tokenizer(char* expression){
+    int i = -1;
+    int j = 0;
+    token_info* info = NULL;
+    token* head = create_node(NULL,0,&info);;
+    token* tail = head;
+    char buffer[32] = {'\0'};
+    while(expression[++i] != '\0'){
+        if(is_digit(&expression[i])){
+            buffer[j++] = expression[i];
+        }else if(includes(&expression[i])){
+            if(buffer[0] != '\0'){//checks if their are 2 operators in a row
+                add_node(&tail, &info, &buffer[0],j);
+                bzero(buffer,j);
+                j = 0;
+            }
+            add_node(&tail, &info, &expression[i],1);
+        }else{//skips white spaces, or returns NULL if a token is invalid
+            if(expression[i] != ' '){
+                return NULL;
+            }
+        }
+    }
+    if(buffer[0] != '\0'){
+        add_node(&tail, &info, &buffer[0],j);
+    }
+    add_node(&tail, &info, NULL,0);//end with NULL
+    return info;
+}

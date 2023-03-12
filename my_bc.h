@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
 
 enum t_type{
     DIGIT,
@@ -94,10 +95,12 @@ void print_ll(token* tokens);
 void dup_token(token** node, char* token, int len);
 void add_node(token** node, token_info** info, char* token, int len);
 void lookahead_mod(token** tokens, bool look_far, char* val);
+token_info* tokenizer(char* expression);
 
 //parser.c
 char* lookahead(token* tokens, bool look_far);
-bool is_valid(token* tokens, token_info* info);
+bool is_valid(token_info* info);
+
 
 //helper.c
 bool includes(char* operator);
@@ -112,7 +115,7 @@ void swap_top(queue** output, stack** operators, char* token);
 void handle_paren(queue** output, stack** operators);
 int which_tup(char operator);
 void push_rem_ops(queue** output, stack** operators);
-int rev_pol(queue* postfix);
+int rev_pol(queue* postfix, bool* err);
 int send_eq(int op1, int op2, int (*some_operation) (int val1, int val2));
 operation_hash* hash_operations(eq_tuples ops[]);
 int add(int op1, int op2);

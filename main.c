@@ -23,7 +23,7 @@ int calculate(char *expression, bool *no_err){
 void read_loop(){
     printf("**********************************************************************\n\
 * Thanks for trying out my calculator!                               *\n*                                                                    *\n\
-* Currently supports: addition, subtraction, multiplication, division*\n\
+* Currently supports: addition, subtraction, multiplication, division, modulo*\n\
 **********************************************************************\n\n");
     char *buffer = NULL;
     bool no_err = true;

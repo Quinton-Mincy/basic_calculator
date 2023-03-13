@@ -49,11 +49,11 @@ tuple_hash* hash_tuples(tuple op_tuples[]){
 }
 
 void l_paren_rules(stack** op_stack, queue** output, token** tokens, char* curr_token, char* prev_token, char* next_token, bool* skip){
-    if(output){};
-    if(tokens){};
-    if(prev_token){};
-    if(next_token){};
-    if(skip){};
+    (void)tokens;
+    (void)prev_token;
+    (void)next_token;
+    (void)curr_token;
+    (void)skip;
     (*op_stack)->push(op_stack,curr_token);
 }
 
@@ -118,18 +118,19 @@ void push_rem_ops(queue** output, stack** operators){
 int rev_pol(queue* postfix, bool* err){
     stack* result = init_stack(postfix->count);
     eq_tuples ops[] = { {'+',&add}, {'-',&subtract}, {'*',&multiply}, {'/',&divide}, {'%',&modulus}, {-1,NULL} };
+    /*hash by ascii value of each operator*/
     operation_hash* hash = hash_operations(ops);
     while(!postfix->empty(postfix)){
         char* curr_elem = postfix->dequeue(postfix);
         if(!is_num(curr_elem)){
             int operand2 = atoi(result->pop(&result));
             int operand1 = atoi(result->pop(&result));
+            /*divide by zero error*/
             if(*curr_elem == '/' && operand2 == 0){
                 *err = true;
                 return -1;
             }
             int answer = send_eq(operand1, operand2,hash->hash[(int)*curr_elem].operation);
-            // printf("%d %c %d = %d\n",operand1,*curr_elem,operand2,answer);
             result->push(&result,itoa(answer));
         }else{
             result->push(&result,curr_elem);
@@ -139,11 +140,11 @@ int rev_pol(queue* postfix, bool* err){
 }
 
 void r_paren_rules(stack** op_stack, queue** output, token** tokens, char* curr_token, char* prev_token, char* next_token, bool* skip){
-    if(tokens){};
-    if(prev_token){};
-    if(next_token){};
-    if(curr_token){};
-    if(skip){};
+    (void)tokens;
+    (void)prev_token;
+    (void)next_token;
+    (void)curr_token;
+    (void)skip;
     handle_paren(output,op_stack);
 }
 

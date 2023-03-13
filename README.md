@@ -2,6 +2,8 @@
 
 <img width="618" alt="Screen Shot 2023-03-12 at 7 11 15 PM" src="https://user-images.githubusercontent.com/73136662/224579751-a75426f4-c855-404f-8ce4-c52051da9c2f.png">
 
+*Not yet compatable with Windows.*
+
 ## Overview
 
 Creating a program that performs simple calculations is complex not due to the calculations themselves: two plus two is simple enough, but 
